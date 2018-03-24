@@ -57,7 +57,7 @@
 (defn normalized-cross-product [point1 point2]
 	(let [point3 (cross-product point1 point2)
 				mag    (magnitude point3)]
-		(if (< mag 1E-3)
+		(if (< mag 1E-10)
 			{:x 0 :y 0 :z 0}
 			(scale point3 (/ 1 mag)))))
 
