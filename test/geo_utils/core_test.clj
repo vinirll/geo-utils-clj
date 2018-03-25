@@ -66,7 +66,19 @@
     (angular-distance p7 p10) => (roughly (/ Math/PI 2)))
   (fact "arc-intersection-normal"
     (arc-intersection-normal p7 p8 p9 p10) => (just {:x (roughly 0) :y (roughly 0) :z (roughly 0)})))
-(facts about geo-distance
+(facts "about polyline latlng normalization"
+       (fact "many repetitions"
+             (remove-all-repeated-points-in-sequence
+            [{:latitude -23 :longitude -46} {:latitude -23 :longitude -46}
+            {:latitude -24 :longitude -46} {:latitude -24 :longitude -46}
+            {:latitude -23 :longitude -46}]) => [{:latitude -23 :longitude -46} {:latitude -24 :longitude -46} {:latitude -23 :longitude -46}])
+       (fact "no repeated points"
+             (remove-all-repeated-points-in-sequence [{:latitude -23 :longitude -46} {:latitude -24 :longitude -46}]) => [{:latitude -23 :longitude -46} {:latitude -24 :longitude -46}])
+       (fact "one point"
+             (remove-all-repeated-points-in-sequence [{:latitude -23 :longitude -46}]) => [{:latitude -23 :longitude -46}])
+       (fact "two repeated points"
+             (remove-all-repeated-points-in-sequence [{:latitude -23 :longitude -46} {:latitude -23 :longitude -46}]) => [{:latitude -23 :longitude -46}]))
+(facts "about geo-distance"
   (fact "point-to-line-segment-distance" ; comparing to node library
     (point-to-line-segment-distance p-sp p-rj p-bh) => 328099.8643303486)
   (fact "point-to-polyline-distance"  ; TODO Explain why polyline vector works and polylinelists crashes point-to-polyline-distance

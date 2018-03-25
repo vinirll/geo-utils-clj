@@ -92,9 +92,15 @@
 														(angular-distance point line-point1)
 														(angular-distance point line-point2))))))
 
+(defn remove-all-repeated-points-in-sequence [polyline-latlng]
+	(reduce (fn [acc,p] (if (distinct? (last acc) p)
+													(conj acc p)
+													acc))
+					(into [] (take 1 polyline-latlng)) (rest polyline-latlng)))
+
 (defn point-to-polyline-distance [point-latlgn polyline-latlgn]
 	(let [point-coord (point point-latlgn)
-			  polyline-coord (polyline polyline-latlgn)
+			  polyline-coord (polyline (remove-all-repeated-points-in-sequence polyline-latlgn))
 			  distances (map
 			  	(fn [x y x-latlgn y-latlgn] {:distance (point-to-line-segment-distance point-coord x y)
 			  		:line [x-latlgn y-latlgn]})
